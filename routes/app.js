@@ -193,7 +193,7 @@ router.post('/login', function(req,res,next){
     else{
     if(mail.length!=0) {
       mail.forEach((x)=>{
-        console.log(x.password);
+        console.log(req.body.password);
         if(x.password==req.body.password){
           // generate token
           let token = jwt.sign({email:x.email},'secret');

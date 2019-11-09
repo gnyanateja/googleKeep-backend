@@ -65,17 +65,17 @@ router.post('/registerCheck',  function(req,res,next){
                                 var transporter = nodemailer.createTransport({
                                   service : 'gmail',
                                   auth: {
-                                        user: 'appointmentsamuda@gmail.com',
-                                        pass: 'Amuda@2019'
+                                        user: 'googlkeep8@gmail.com',
+                                        pass: 'q1w2e3r4t5@'
                                     }
                                 });
                                 
                                 
                                 const mailOptions = {
-                                  from: 'appointmentsamuda.com', // sender address
+                                  from: 'googlkeep8.com', // sender address
                                   to: req.body.email, // list of receivers
                                   subject: 'OTP for Registration', // Subject line
-                                  html: "<h3>Hi,Welcome to Amuda Family </h3><br><p>Your OTP for registration is "+otp+"</p>"
+                                  html: "<h3>Hi,Welcome to google Family </h3><br><p>Your OTP for registration is "+otp+"</p>"
                                 
                                 }
                                 transporter.sendMail(mailOptions, function (err, info) {
@@ -97,14 +97,14 @@ router.post('/registerCheck',  function(req,res,next){
                               var transporter = nodemailer.createTransport({
                                 service : 'gmail',
                                 auth: {
-                                      user: 'appointmentsamuda@gmail.com',
-                                      pass: 'Amuda@2019'
+                                      user: 'googlkeep8@gmail.com',
+                                      pass: 'q1w2e3r4t5@'
                                   }
                               });
                               
                               
                               const mailOptions = {
-                                from: 'appointmentsamuda.com', // sender address
+                                from: 'googlkeep8.com', // sender address
                                 to: req.body.email, // list of receivers
                                 subject: 'Otp for Registration', // Subject line
                                 html: "<h3>Hi,Welcome to Amuda Family </h3><br><p>Your Otp for registration is "+otp+"</p>"
@@ -153,14 +153,14 @@ router.post('/register',  function(req,res,next){
                         var transporter = nodemailer.createTransport({
                           service : 'gmail',
                           auth: {
-                                user: 'appointmentsamuda@gmail.com',
-                                pass: 'Amuda@2019'
+                                user: 'googlkeep8@gmail.com',
+                                pass: 'q1w2e3r4t5@'
                             }
                         });
                         
                         
                         const mailOptions = {
-                          from: 'appointmentsamuda.com', // sender address
+                          from: 'googlkeep8.com', // sender address
                           to: x.email, // list of receivers
                           subject: 'Registration Successful', // Subject line
                           html: "<h3>Hi "+req.body.name+",Welcome to Amuda Family</h3><br><p>All the best for your project.</p>"                        
@@ -354,14 +354,14 @@ router.post('/passwordCheck',  function(req,res,next){
                               var transporter = nodemailer.createTransport({
                                 service : 'gmail',
                                 auth: {
-                                      user: 'appointmentsamuda@gmail.com',
-                                      pass: 'Amuda@2019'
+                                      user: 'googlkeep8@gmail.com',
+                                      pass: 'q1w2e3r4t5@'
                                   }
                               });
                               
                               
                               const mailOptions = {
-                                from: 'appointmentsamuda.com', // sender address
+                                from: 'googlkeep8.com', // sender address
                                 to: req.body.email, // list of receivers
                                 subject: 'OTP for Change Password', // Subject line
                                 html: "<h3>Hi ,</h3><br><p>Your OTP for change password is "+otp+"</p>"
@@ -386,14 +386,14 @@ router.post('/passwordCheck',  function(req,res,next){
                             var transporter = nodemailer.createTransport({
                               service : 'gmail',
                               auth: {
-                                    user: 'appointmentsamuda@gmail.com',
-                                    pass: 'Amuda@2019'
+                                    user: 'googlkeep8@gmail.com',
+                                    pass: 'q1w2e3r4t5@'
                                 }
                             });
                             
                             
                             const mailOptions = {
-                              from: 'appointmentsamuda.com', // sender address
+                              from: 'googlkeep8.com', // sender address
                               to: req.body.email, // list of receivers
                               subject: 'OTP for Change Password', // Subject line
                               html: "<h3>Hi ,</h3><br><p>OTP for Change Password is "+otp+"</p>"
@@ -451,14 +451,14 @@ router.post('/updatePassword',function(req,res){
                         var transporter = nodemailer.createTransport({
                           service : 'gmail',
                           auth: {
-                                user: 'appointmentsamuda@gmail.com',
-                                pass: 'Amuda@2019'
+                                user: 'googlkeep8@gmail.com',
+                                pass: 'q1w2e3r4t5@'
                             }
                         });
                         
                         
                         const mailOptions = {
-                          from: 'appointmentsamuda.com', // sender address
+                          from: 'googlkeep8.com', // sender address
                           to: x.email, // list of receivers
                           subject: 'Change Password Successful', // Subject line
                           html: "<h3>Hi Your account password for "+x.email+" has been changed successfully</h3><br>"                        

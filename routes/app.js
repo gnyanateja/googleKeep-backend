@@ -145,11 +145,7 @@ router.post('/register',  function(req,res,next){
                         db.collection('users').insertOne({
                           email:x.email,
                           name:req.body.name,
-                          accesscode:req.body.accesscode,
-                          tou:req.body.tou,
-                          msgid: "",
-                          uuid:"",
-                          type:""
+                          password:req.body.hashed
                         });
                         
                         var transporter = nodemailer.createTransport({
@@ -165,7 +161,7 @@ router.post('/register',  function(req,res,next){
                           from: 'googlkeep8.com', // sender address
                           to: x.email, // list of receivers
                           subject: 'Registration Successful', // Subject line
-                          html: "<h3>Hi "+req.body.name+",Welcome to Amuda Family</h3><br><p>All the best for your project.</p>"                        
+                          html: "<h3>Hi "+req.body.name+",Welcome to Google Family</h3><br>"                        
                         }
                         transporter.sendMail(mailOptions, function (err, info) {
                           if(err)

@@ -193,18 +193,9 @@ router.post('/login', function(req,res,next){
     else{
     if(mail.length!=0) {
       mail.forEach((x)=>{
-        if(x.accesscode==req.body.accesscode){
+        if(x.password==req.body.password){
           // generate token
           let token = jwt.sign({email:x.email},'secret');
-          
-          
-          
-          db.collection('users').findOneAndUpdate(
-            {email:x.email},
-            {"$set": {"msgid": req.body.appID}},
-            [['_id','asc']],  // sort order
-            {"upsert":false}, // options
-            );
 
           return res.status(200).json({'code':200,'token':token});
 

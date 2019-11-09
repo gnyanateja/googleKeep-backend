@@ -145,7 +145,7 @@ router.post('/register',  function(req,res,next){
                         db.collection('users').insertOne({
                           email:x.email,
                           name:req.body.name,
-                          password:req.body.hashed
+                          password:req.body.password
                         });
                         
                         var transporter = nodemailer.createTransport({

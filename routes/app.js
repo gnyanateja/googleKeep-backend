@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
-var mongoose=require('mongoose');
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb+srv://google:q1w2e3r4t5@@cluster0-auyic.mongodb.net/googleKeep?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true });
+
 var nodemailer = require('nodemailer');
 var jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');

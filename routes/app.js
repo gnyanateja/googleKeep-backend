@@ -193,7 +193,6 @@ router.post('/login', function(req,res,next){
     else{
     if(mail.length!=0) {
       mail.forEach((x)=>{
-        console.log(req.body.password);
         if(x.password==req.body.password){
           // generate token
           let token = jwt.sign({email:x.email},'secret');
@@ -433,7 +432,7 @@ router.post('/updatePassword',function(req,res){
                       {
                         db.collection('users').findOneAndUpdate(
                           {email:x.email},
-                          {"$set": {"accesscode": req.body.accesscode}},
+                          {"$set": {"password": req.body.password}},
                           [['_id','asc']],  // sort order
                           {"upsert":false}, // options
                           );

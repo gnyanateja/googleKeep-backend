@@ -131,7 +131,7 @@ router.post('/registerCheck',  function(req,res,next){
 
 router.post('/register',  function(req,res,next){
 
-    db.collection('userSample').find({"otp":req.body.otp}).toArray( (err,sample) => {
+    db.collection('userSample').find({"otp":req.body.otp}, (err,sample) => {
       if(err)
       res.status(402).json({"code":402,"status":"error"});
       else{
@@ -191,7 +191,7 @@ router.post('/register',  function(req,res,next){
 
 
 router.post('/login', function(req,res,next){
-  db.collection('users').find({email:req.body.email}).toArray( (err,mail) => {
+  db.collection('users').find({email:req.body.email}, (err,mail) => {
     if(err)
         res.status(402).json({"code":402,"status":"error"});
     else{
@@ -242,7 +242,7 @@ router.post('/logout',function(req,res){
       }
       if(tokendata){
         dt = tokendata;
-        db.collection('users').find({"email":dt.email}).toArray( (err,mail) => {
+        db.collection('users').find({"email":dt.email}, (err,mail) => {
           if(err)
               res.status(200).json({"code":402,"status":"error"});
           else{
@@ -305,7 +305,7 @@ function verifyToken(req,res){
     }
     if(tokendata){
       decodedToken = tokendata;
-      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+      db.collection('users').find({"email":decodedToken.email}, (err,mail) => {
         if(err)
             res.status(200).json({"code":402,"status":"error"});
         else{
@@ -334,7 +334,7 @@ router.post('/passwordCheck',  function(req,res,next){
 
   otp=generateOtp(6);
 
-  db.collection('users').find({"email":req.body.email}).toArray( (err,mail) => {
+  db.collection('users').find({"email":req.body.email}, (err,mail) => {
     if(err)
         res.status(402).json({"code":402,"status":"error"});
     else{
@@ -342,7 +342,7 @@ router.post('/passwordCheck',  function(req,res,next){
             res.status(200).json({"code":202,"status":"User does not exists"});
         }
         else{
-              db.collection('passwordSample').find({"email":req.body.email}).toArray( (err,check) => {
+              db.collection('passwordSample').find({"email":req.body.email}, (err,check) => {
                 if(err)
                     res.status(402).json({"code":402,"status":"error"});
                 else{
@@ -432,7 +432,7 @@ router.post('/passwordCheck',  function(req,res,next){
 
 router.post('/updatePassword',function(req,res){
 
-    db.collection('passwordSample').find({"otp":req.body.otp}).toArray( (err,sample) => {
+    db.collection('passwordSample').find({"otp":req.body.otp}, (err,sample) => {
       if(err)
       res.status(402).json({"code":402,"status":"error"});
       else{

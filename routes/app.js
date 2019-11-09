@@ -37,7 +37,7 @@ var otp;
 router.post('/registerCheck',  function(req,res,next){
 
     otp=generateOtp(6);
-    console.log(db);
+    
     db.collection('users').find({"email":req.body.email}).toArray( (err,mail) => {
       if(err)
           res.status(402).json({"code":402,"status":"error"});

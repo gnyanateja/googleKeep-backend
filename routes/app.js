@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://google:q1w2e3r4t5@@cluster0-auyic.mongodb.net/googleKeep?retryWrites=true&w=majority',{useNewUrlParser: true, useUnifiedTopology: true });
 
 var nodemailer = require('nodemailer');
 var jwt = require('jsonwebtoken');
@@ -15,6 +14,7 @@ const https = require('https');
 var db=mongoose.connection;
  
 console.log(db);
+
 
 
 function generateOtp(n) {
@@ -41,7 +41,7 @@ router.post('/registerCheck',  function(req,res,next){
 
     otp=generateOtp(6);
     
-    db.collection('users').find({"email":req.body.email}).toArray( (err,mail) => {
+    db.collection('users').find({"email":req.body.email}).exec( (err,mail) => {
       if(err)
           res.status(402).json({"code":402,"status":"error"});
       else{

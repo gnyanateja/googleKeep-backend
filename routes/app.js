@@ -12,8 +12,7 @@ const https = require('https');
 
 
 var db=mongoose.connection;
- 
-console.log(db);
+
 
 
 
@@ -41,7 +40,7 @@ router.post('/registerCheck',  function(req,res,next){
 
     otp=generateOtp(6);
     
-    db.collection('users').find({"email":req.body.email}).exec( (err,mail) => {
+    db.collection('users').find({"email":req.body.email}, (err,mail) => {
       if(err)
           res.status(402).json({"code":402,"status":"error"});
       else{
@@ -49,7 +48,7 @@ router.post('/registerCheck',  function(req,res,next){
               res.status(200).json({"code":202,"status":"User mail-id already exists"});
           }
           else{
-                db.collection('userSample').find({"email":req.body.email}).toArray( (err,check) => {
+                db.collection('userSample').find({"email":req.body.email}, (err,check) => {
                   if(err)
                       res.status(402).json({"code":402,"status":"error"});
                   else{

@@ -11,7 +11,7 @@ const https = require('https');
 
 var db=mongoose.connection;
  
-
+console.log(db);
 
 
 function generateOtp(n) {

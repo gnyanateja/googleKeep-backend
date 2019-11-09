@@ -6,7 +6,7 @@ var app = express();
 
  var mongoose = require('mongoose');
  
-mongoose.connect('mongodb+srv://google:wwT4h66ySy7Yfh27@cluster0-auyic.mongodb.net/test?retryWrites=true&w=majority',{useNewUrlParser: true });
+mongoose.connect('mongodb+srv://google:wwT4h66ySy7Yfh27@cluster0-auyic.mongodb.net/googleKeep?retryWrites=true&w=majority',{useNewUrlParser: true });
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

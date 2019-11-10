@@ -502,7 +502,8 @@ router.post('/addNote', function(req,res){
                     note : req.body.note,
                     isPinned : false,
                     isArchived : false,
-                    isTrashed : false
+                    isTrashed : false,
+                    label : ""
                   });
                   res.json({'code':200});
                 })
@@ -514,6 +515,7 @@ router.post('/addNote', function(req,res){
 
 
 })
+
 
 
 router.post('/getNotes', function(req, res){
@@ -916,6 +918,151 @@ router.post('/restoreNote',function(req,res){
     }
   })
 })
+
+
+
+
+
+
+router.post('/addLabel', function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      var k=uuidv4()
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(402).json({"code":402,"status":"error"});
+        else{
+              if(mail.length==0){
+                res.json({'code':411});
+              }
+                mail.forEach((x)=>{
+                  db.collection('labels').insertOne({
+                    uuid : k,
+                    email : decodedToken.email,
+                    label : req.body.label
+                  });
+                  res.json({'code':200});
+                })
+              }
+      });
+      
+    }
+  })
+
+
+})
+
+
+
+router.post('/getLabel', function(req, res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(402).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('labels').find({"email":decodedToken.email}).toArray((err,labels) => {
+                    if(err)
+                    res.status(402).json({"code":402,"status":"error"});
+                    else{
+                      res.json({"code":200,"notes":labels});
+                    }
+                  })
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+router.post('/updateLabel',function(req,res){
+  let token = req.body.token;
+  console.log(req.body);
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(402).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('labels').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"label": req.body.uuid}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"updated Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('/deleteLabel',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(402).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  var myquery = { uuid : req.body.uuid };  
+                  db.collection("labels").remove(myquery, function(err, obj) {  
+                  if (err) 
+                    res.json({"code":400,"status":"error"});
+                  else{
+                    res.json({"code":200,"status":"deleted note"});
+                      }  
+                  });
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+
+
+
 
 
 

@@ -550,8 +550,8 @@ router.post('/getNotes', function(req, res){
 
 
 router.post('updateNote',function(req,res){
+  console.log(req.body);
   let token = req.body.token;
-
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
       res.status(402).json({"code":402,"message":"Unauthorized request"});

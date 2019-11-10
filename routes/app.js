@@ -478,6 +478,448 @@ router.post('/updatePassword',function(req,res){
 
 
 
+router.post('/addNote', function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      var k=uuidv4()
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+              if(mail.length==0){
+                res.json({'code':411});
+              }
+                mail.forEach((x)=>{
+                  db.collection('notes').insertOne({
+                    uuid : k,
+                    email : decodedToken.email,
+                    title : req.body.title,
+                    note : req.body.note,
+                    isPinned : false,
+                    isArchived : false,
+                    isTrashed : false
+                  });
+                  res.json({'code':200});
+                })
+              }
+      });
+      
+    }
+  })
+
+
+})
+
+
+router.post('/getNotes', function(req, res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').find({"email":decodedToken.email,"isPinned" : false,"isArchived" : false,"isTrashed" : false}).toArray((err,notes) => {
+                    if(err)
+                    res.status(200).json({"code":402,"status":"error"});
+                    else{
+                      res.json({"code":200,"notes":notes});
+                    }
+                  })
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+router.post('updateNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"title": req.body.title,"note": req.body.note}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"updated Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+
+
+router.post('deleteNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  var myquery = { uuid : req.body.uuid };  
+                  db.collection("notes").remove(myquery, function(err, obj) {  
+                  if (err) 
+                    res.json({"code":400,"status":"error"});
+                  else{
+                    res.json({"code":200,"status":"deleted note"});
+                      }  
+                  });
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+
+router.post('/getPinnedNotes', function(req, res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').find({"email":decodedToken.email,"isPinned" : true,"isArchived" : false,"isTrashed" : false}).toArray((err,notes) => {
+                    if(err)
+                    res.status(200).json({"code":402,"status":"error"});
+                    else{
+                      res.json({"code":200,"notes":notes});
+                    }
+                  })
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+
+
+router.post('pinNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"isPinned" : true,"isArchived" : false,"isTrashed" : false}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"pinned Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('unpinNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"isPinned" : false,"isArchived" : false,"isTrashed" : false}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"pinned Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
+router.post('/getArchivedNotes', function(req, res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').find({"email":decodedToken.email,"isPinned" : false,"isArchived" : true,"isTrashed" : false}).toArray((err,notes) => {
+                    if(err)
+                    res.status(200).json({"code":402,"status":"error"});
+                    else{
+                      res.json({"code":200,"notes":notes});
+                    }
+                  })
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('archiveNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"isPinned" : false,"isArchived" : true,"isTrashed" : false}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"pinned Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('unarchiveNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"isPinned" : false,"isArchived" : false,"isTrashed" : false}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"pinned Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('/getTrashedNotes', function(req, res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').find({"email":decodedToken.email,"isPinned" : false,"isArchived" : false,"isTrashed" : true}).toArray((err,notes) => {
+                    if(err)
+                    res.status(200).json({"code":402,"status":"error"});
+                    else{
+                      res.json({"code":200,"notes":notes});
+                    }
+                  })
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('trashNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"isPinned" : false,"isArchived" : false,"isTrashed" : true}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"pinned Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+router.post('restoreNote',function(req,res){
+  let token = req.body.token;
+
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(200).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(200).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').findOneAndUpdate(
+                    {"uuid": req.body.uuid},
+                    {"$set": {"isPinned" : false,"isArchived" : false,"isTrashed" : false}},
+                    [['_id','asc']],  // sort order
+                    {"upsert":false}, // options
+                    ).then(() => {
+                      res.json({"code":200,"status":"pinned Note"});
+                    })       
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
+
 
 
 module.exports = router;

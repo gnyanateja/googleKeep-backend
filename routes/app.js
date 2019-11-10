@@ -225,13 +225,13 @@ router.post('/logout',function(req,res){
   let dt=""
     jwt.verify(token,'secret', function(err, tokendata){
       if(err){
-         res.status(200).json({"code":402,"message":"Unauthorized request"});
+         res.status(402).json({"code":402,"message":"Unauthorized request"});
       }
       if(tokendata){
         dt = tokendata;
         db.collection('users').find({"email":dt.email}).toArray( (err,mail) => {
           if(err)
-              res.status(200).json({"code":402,"status":"error"});
+              res.status(402).json({"code":402,"status":"error"});
           else{
               if(mail.length!=0){
                 var newmsgid="";
@@ -287,13 +287,13 @@ function verifyToken(req,res){
   let token = req.body.token;
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      return res.status(200).json({"code":402,"message":"Unauthorized request"});
+      return res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
             if(mail.length!=0){
               mail.forEach((x)=>{
@@ -301,7 +301,7 @@ function verifyToken(req,res){
               });
             }
             else{
-                res.status(200).json({"code":400,"status":"User does not exists"});
+                res.status(402).json({"code":400,"status":"User does not exists"});
             }
 
         }        
@@ -357,7 +357,7 @@ router.post('/passwordCheck',  function(req,res,next){
                               }
                               transporter.sendMail(mailOptions, function (err, info) {
                                 if(err)
-                                  res.status(200).json({"code":402,"status":"error"});
+                                  res.status(402).json({"code":402,"status":"error"});
                                 else
                                   res.status(200).json({"code":200,"status":"otp again generated"});
                             });
@@ -389,7 +389,7 @@ router.post('/passwordCheck',  function(req,res,next){
                             }
                             transporter.sendMail(mailOptions, function (err, info) {
                               if(err)
-                                res.status(200).json({"code":402,"status":"error"});
+                                res.status(402).json({"code":402,"status":"error"});
                               else
                                 res.status(200).json({"code":200,"status":"otp generated"});
                           });
@@ -482,14 +482,14 @@ router.post('/addNote', function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       var k=uuidv4()
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
               if(mail.length==0){
                 res.json({'code':411});
@@ -521,18 +521,18 @@ router.post('/getNotes', function(req, res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').find({"email":decodedToken.email,"isPinned" : false,"isArchived" : false,"isTrashed" : false}).toArray((err,notes) => {
                     if(err)
-                    res.status(200).json({"code":402,"status":"error"});
+                    res.status(402).json({"code":402,"status":"error"});
                     else{
                       res.json({"code":200,"notes":notes});
                     }
@@ -554,13 +554,13 @@ router.post('updateNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(
@@ -590,13 +590,13 @@ router.post('deleteNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   var myquery = { uuid : req.body.uuid };  
@@ -625,18 +625,18 @@ router.post('/getPinnedNotes', function(req, res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').find({"email":decodedToken.email,"isPinned" : true,"isArchived" : false,"isTrashed" : false}).toArray((err,notes) => {
                     if(err)
-                    res.status(200).json({"code":402,"status":"error"});
+                      res.status(402).json({"code":402,"status":"error"});
                     else{
                       res.json({"code":200,"notes":notes});
                     }
@@ -660,13 +660,13 @@ router.post('pinNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(
@@ -693,13 +693,13 @@ router.post('unpinNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(
@@ -727,18 +727,18 @@ router.post('/getArchivedNotes', function(req, res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').find({"email":decodedToken.email,"isPinned" : false,"isArchived" : true,"isTrashed" : false}).toArray((err,notes) => {
                     if(err)
-                    res.status(200).json({"code":402,"status":"error"});
+                    res.status(402).json({"code":402,"status":"error"});
                     else{
                       res.json({"code":200,"notes":notes});
                     }
@@ -759,13 +759,13 @@ router.post('archiveNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(
@@ -792,13 +792,13 @@ router.post('unarchiveNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(
@@ -825,18 +825,18 @@ router.post('/getTrashedNotes', function(req, res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').find({"email":decodedToken.email,"isPinned" : false,"isArchived" : false,"isTrashed" : true}).toArray((err,notes) => {
                     if(err)
-                    res.status(200).json({"code":402,"status":"error"});
+                    res.status(402).json({"code":402,"status":"error"});
                     else{
                       res.json({"code":200,"notes":notes});
                     }
@@ -857,13 +857,13 @@ router.post('trashNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(
@@ -890,13 +890,13 @@ router.post('restoreNote',function(req,res){
 
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
-      res.status(200).json({"code":402,"message":"Unauthorized request"});
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
     }
     if(tokendata){
       decodedToken = tokendata;
       db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
         if(err)
-            res.status(200).json({"code":402,"status":"error"});
+            res.status(402).json({"code":402,"status":"error"});
         else{
                 if(mail.length!=0){
                   db.collection('notes').findOneAndUpdate(

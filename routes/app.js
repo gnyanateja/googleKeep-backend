@@ -285,7 +285,7 @@ router.post('/user', function(req,res,next){
 var decodedToken='';
 function verifyToken(req,res){
   let token = req.body.token;
-  console.log(req.body);
+  console.log(req.body.token);
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
       return res.status(200).json({"code":402,"message":"Unauthorized request"});

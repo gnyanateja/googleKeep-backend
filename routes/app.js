@@ -549,7 +549,7 @@ router.post('/getNotes', function(req, res){
 
 
 
-router.post('updateNote',function(req,res){
+router.post('/updateNote',function(req,res){
   console.log(req.body);
   let token = req.body.token;
   jwt.verify(token,'secret', function(err, tokendata){
@@ -585,7 +585,7 @@ router.post('updateNote',function(req,res){
 
 
 
-router.post('deleteNote',function(req,res){
+router.post('/deleteNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
@@ -655,7 +655,7 @@ router.post('/getPinnedNotes', function(req, res){
 
 
 
-router.post('pinNote',function(req,res){
+router.post('/pinNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
@@ -688,7 +688,7 @@ router.post('pinNote',function(req,res){
 })
 
 
-router.post('unpinNote',function(req,res){
+router.post('/unpinNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
@@ -754,7 +754,7 @@ router.post('/getArchivedNotes', function(req, res){
 })
 
 
-router.post('archiveNote',function(req,res){
+router.post('/archiveNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
@@ -787,7 +787,7 @@ router.post('archiveNote',function(req,res){
 })
 
 
-router.post('unarchiveNote',function(req,res){
+router.post('/unarchiveNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
@@ -852,7 +852,7 @@ router.post('/getTrashedNotes', function(req, res){
 })
 
 
-router.post('trashNote',function(req,res){
+router.post('/trashNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
@@ -885,7 +885,7 @@ router.post('trashNote',function(req,res){
 })
 
 
-router.post('restoreNote',function(req,res){
+router.post('/restoreNote',function(req,res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){

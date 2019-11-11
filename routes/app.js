@@ -962,7 +962,6 @@ router.post('/addLabel', function(req,res){
 
 router.post('/getLabels', function(req, res){
   let token = req.body.token;
-  console.log(req.body);
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
       res.status(402).json({"code":402,"message":"Unauthorized request"});
@@ -1009,7 +1008,7 @@ router.post('/updateLabel',function(req,res){
                 if(mail.length!=0){
                   db.collection('labels').findOneAndUpdate(
                     {"uuid": req.body.uuid},
-                    {"$set": {"label": req.body.uuid}},
+                    {"$set": {"label": req.body.label}},
                     [['_id','asc']],  // sort order
                     {"upsert":false}, // options
                     ).then(() => {

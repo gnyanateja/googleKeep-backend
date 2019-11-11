@@ -991,6 +991,37 @@ router.post('/getLabels', function(req, res){
 })
 
 
+router.post('/getLabelNotes', function(req, res){
+  let token = req.body.token;
+  jwt.verify(token,'secret', function(err, tokendata){
+    if(err){
+      res.status(402).json({"code":402,"message":"Unauthorized request"});
+    }
+    if(tokendata){
+      decodedToken = tokendata;
+      db.collection('users').find({"email":decodedToken.email}).toArray( (err,mail) => {
+        if(err)
+            res.status(402).json({"code":402,"status":"error"});
+        else{
+                if(mail.length!=0){
+                  db.collection('notes').find({"email":decodedToken.email,"label":req.body.label}).toArray((err,labels) => {
+                    if(err)
+                    res.status(402).json({"code":402,"status":"error"});
+                    else{
+                      res.json({"code":200,"notes":labels});
+                    }
+                  })
+                }
+                else{
+                  res.json({'code':411})
+                }
+            }
+      });
+    }
+  })
+})
+
+
 
 router.post('/updateLabel',function(req,res){
   let token = req.body.token;

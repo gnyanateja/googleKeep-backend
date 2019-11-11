@@ -993,6 +993,7 @@ router.post('/getLabels', function(req, res){
 
 router.post('/getLabelNotes', function(req, res){
   let token = req.body.token;
+  console.log(req.body);
   jwt.verify(token,'secret', function(err, tokendata){
     if(err){
       res.status(402).json({"code":402,"message":"Unauthorized request"});

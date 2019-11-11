@@ -503,7 +503,7 @@ router.post('/addNote', function(req,res){
                     isPinned : false,
                     isArchived : false,
                     isTrashed : false,
-                    label : ""
+                    label : req.body.label
                   });
                   res.json({'code':200});
                 })

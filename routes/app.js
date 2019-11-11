@@ -960,7 +960,7 @@ router.post('/addLabel', function(req,res){
 
 
 
-router.post('/getLabel', function(req, res){
+router.post('/getLabels', function(req, res){
   let token = req.body.token;
 
   jwt.verify(token,'secret', function(err, tokendata){
